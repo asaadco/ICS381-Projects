@@ -96,6 +96,7 @@ def depthFirstSearch(problem):
         #print(cords)
         if (problem.isGoalState(cords[0])): # decleare sucuess when trying to expand the goal state
             print("Solution length:", len(cords[1]))
+            print(cords)
             return cords[1] # returns path
         if (cords[0] not in checked):
             checked.append(cords[0]) # marking current state as visited
@@ -118,29 +119,25 @@ def depthFirstSearch(problem):
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
   
-    fringe = util.Queue()    
-    checked = []    # visited  states
-    cords = problem.getStartState()
-    fringe.push([cords, [], 0])
+    fringe = util.Queue()
+    fringe.push( (problem.getStartState(), [], []) )
+    expanded = []
 
-    while not (fringe.isEmpty()):
-        cords = fringe.pop()
-        if (problem.isGoalState(cords[0])): # decleare sucuess when trying to expand the goal state
-            print("Solution length:", len(cords[1]))
-            return cords[1] # returns path
+    while not fringe.isEmpty():
+        node, actions, curCost = fringe.pop()
 
-        if (cords[0] in checked):
-            continue
+        if(not node in expanded):
+            expanded.append(node)
 
-        checked.append(cords[0])
-        states = problem.getSuccessors(cords[0]) #getting children states of the current state
-        
-        for state in states:
-            fringe.push([ #pushing to the fringe
-            state[0], # frontier state 
-            cords[1] + [state[1]], # path direction 
-            cords[2] + state[2] # total cost of the path
-            ])  
+            if problem.isGoalState(node):
+                print(actions)
+                return actions
+
+            for child, direction, cost in problem.getSuccessors(node):
+                print(node)
+                fringe.push((child, actions+[direction], curCost + [cost]))
+
+    return []
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
