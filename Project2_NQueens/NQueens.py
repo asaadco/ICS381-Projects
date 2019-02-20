@@ -1,4 +1,5 @@
 import random
+import time
 def returnConflicts(gameMap):
     n = len(gameMap)
     c = [[0 for N in range(n)] for N in range(n)]
@@ -65,6 +66,24 @@ def improve(gameMap, queensloc, conflicts):
 
     return gameMap
 
+def myImprove(gameMap, queensloc, conflicts):
+    queen = queensloc[random.randint(0, len(queensloc)-1)]
+    x,y = queen
+    rand1 = random.randint(0,gameMap[0].__len__()-1)
+    rand2 = random.randint(0,gameMap[0].__len__()-1)
+
+    for i in range(0,gameMap[rand1].__len__()):
+        if(gameMap[rand1][i] ==1):
+            print("Row: ",rand1," Col: ",rand2)
+            gameMap[rand1][i] =0;
+            gameMap[rand1][rand2] = 1 ;
+
+    return gameMap;
+            
+
+    
+    
+
 def getQueensLoc(gameMap,queensloc):
     queensloc = []
     for i in range(0,gameMap.__len__()):
@@ -82,8 +101,10 @@ def printBoard(board):
                     
 
 def NQueens():
+    
     #gameMap = [[1 for n in range(5)] for n in range(5)
     n = int(input("ENTER N:\n"))
+    startTime = time.time()
     queensloc = []
     gameMap = [[0 for N in range(n)] for N in range(n)] ## INITILIZLAZE GAMEMAP TO ZEROES
     for i in range(0, n):
@@ -92,11 +113,14 @@ def NQueens():
         queensloc.append((i,rand))
 
     conflicts = returnConflicts(gameMap)
-   
+    printBoard(gameMap)
+    printBoard(conflicts)
+    print(queensloc)
     solved = False
+    
     while(not solved):
-       
-        gameMap = improve(gameMap, queensloc, conflicts)
+        
+        gameMap = myImprove(gameMap, queensloc, conflicts)
         queensloc = getQueensLoc(gameMap,queensloc)
         conflicts = returnConflicts(gameMap)
 
@@ -106,13 +130,14 @@ def NQueens():
         
         c = 0
         for qx, qy in queensloc:
-            print(conflicts[qx][qy])
+            #print(conflicts[qx][qy])
             if conflicts[qx][qy] > 1:
            
                 c+=1
         if(c == 0):
              solved = True
-             print("------------PROBLEM SOLVED------------") 
+             endTime = time.time()
+             print("------------",n,"Queen PROBLEM SOLVED------------/n Time Took: ",endTime-startTime," seconds only!" ) 
              printBoard(gameMap)
              printBoard(conflicts)
 
