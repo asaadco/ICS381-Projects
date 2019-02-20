@@ -119,7 +119,7 @@ def isStuck(queensloc,oldQueenloc):
             stuck = True
     return stuck
 
-def NQueens(i,n):
+def NQueens(t,n):
     
     #gameMap = [[1 for n in range(5)] for n in range(5)
     
@@ -148,9 +148,9 @@ def NQueens(i,n):
         stuck = isStuck(queensloc,oldQueenloc)
         if(stuck):
             threshcnt = threshcnt+1
-            print("Stuck THRSH=",threshcnt)
+            print("ITERATION#",t," Stuck THRSH=",threshcnt)
         if(threshcnt == thresh):
-            print("TERMINATING ",threshcnt,"/",thresh)
+            print("ITERATION#",t," TERMINATING ",threshcnt,"/",thresh)
             return True
             
 
@@ -176,13 +176,12 @@ def NQueens(i,n):
 
 if __name__ == "__main__":
 
-    i=0;
+    t=0;
     n = int(input("ENTER N:\n"))
-    thresh = n/2
-    thresh = thresh.__round__()
+    thresh = 3
     startTime = time.time()
-    while (NQueens(i,n)):
-       i = i+1
+    while (NQueens(t,n)):
+       t = t+1
        print("Done")
 
 
