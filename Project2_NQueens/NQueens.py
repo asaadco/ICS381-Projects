@@ -112,6 +112,7 @@ def NQueens():
                 c+=1
         if(c == 0):
              solved = True
+             print("------------PROBLEM SOLVED------------") 
              printBoard(gameMap)
              printBoard(conflicts)
 
