@@ -64,6 +64,21 @@ def improve(gameMap, queensloc, conflicts):
 
 
     return gameMap
+
+def getQueensLoc(gameMap,queensloc):
+    queensloc = []
+    for i in range(0,gameMap.__len__()):
+        for j in range(0,gameMap[i].__len__()):
+            if(gameMap[i][j] == 1):
+                queensloc.append((i,j))
+            
+    return queensloc
+
+def printBoard(board):
+    for i in range(0,board.__len__()):
+        print(board[i])
+                       
+                       
                     
 
 def NQueens():
@@ -77,29 +92,35 @@ def NQueens():
         queensloc.append((i,rand))
 
     conflicts = returnConflicts(gameMap)
-
+   
     solved = False
     while(not solved):
        
         gameMap = improve(gameMap, queensloc, conflicts)
+        queensloc = getQueensLoc(gameMap,queensloc)
         conflicts = returnConflicts(gameMap)
-        print(gameMap)
-        print(conflicts)
+
+        printBoard(gameMap)
+        printBoard(conflicts)
+        print(queensloc)
+        
         c = 0
         for qx, qy in queensloc:
             print(conflicts[qx][qy])
-            if conflicts[qx][qy] > 0:
+            if conflicts[qx][qy] > 1:
            
                 c+=1
         if(c == 0):
              solved = True
-             print(gameMap)
-             print(conflicts)
+             printBoard(gameMap)
+             printBoard(conflicts)
 
 
 
 
 if __name__ == "__main__":
+
+
     NQueens()
 
 
