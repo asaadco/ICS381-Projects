@@ -66,6 +66,17 @@ def improve(gameMap, queensloc, conflicts):
 
     return gameMap
 
+def getLeastConflict(conflicts,row):
+    min = 4
+    cords = [99,99]
+    for i in range(0,conflicts[row].__len__()):
+        if(conflicts[row][i] < min):
+            cords[0] = row
+            cords[1] = i
+            min = conflicts[row][i]
+    return cords[1]
+    
+
 def myImprove(gameMap, queensloc, conflicts):
     queen = queensloc[random.randint(0, len(queensloc)-1)]
     x,y = queen
@@ -74,9 +85,10 @@ def myImprove(gameMap, queensloc, conflicts):
 
     for i in range(0,gameMap[rand1].__len__()):
         if(gameMap[rand1][i] ==1):
-            print("Row: ",rand1," Col: ",rand2)
+            loc = getLeastConflict(conflicts,rand1)
+            print("Row: ",rand1," Col: ",loc)
             gameMap[rand1][i] =0;
-            gameMap[rand1][rand2] = 1 ;
+            gameMap[rand1][loc] = 1 ;
 
     return gameMap;
             
@@ -98,13 +110,21 @@ def printBoard(board):
         print(board[i])
                        
                        
-                    
+def isStuck(queensloc,oldQueenloc):
+    stuck = True;
+    for i in range(0,queensloc.__len__()) :
+        if(queensloc[i] != oldQueenloc[i]):
+            stuck = False
+        else:
+            stuck = True
+    return stuck
 
-def NQueens():
+def NQueens(i,n):
     
     #gameMap = [[1 for n in range(5)] for n in range(5)
-    n = int(input("ENTER N:\n"))
-    startTime = time.time()
+    
+        
+        
     queensloc = []
     gameMap = [[0 for N in range(n)] for N in range(n)] ## INITILIZLAZE GAMEMAP TO ZEROES
     for i in range(0, n):
@@ -117,22 +137,31 @@ def NQueens():
     printBoard(conflicts)
     print(queensloc)
     solved = False
-    
+    threshcnt = 0;
     while(not solved):
-        
+        #isconflict = false
         gameMap = myImprove(gameMap, queensloc, conflicts)
-        queensloc = getQueensLoc(gameMap,queensloc)
+        oldQueenloc = queensloc
+        queensloc = getQueensLoc(gameMap,queensloc)        
         conflicts = returnConflicts(gameMap)
 
-        printBoard(gameMap)
-        printBoard(conflicts)
+        stuck = isStuck(queensloc,oldQueenloc)
+        if(stuck):
+            threshcnt = threshcnt+1
+            print("Stuck THRSH=",threshcnt)
+        if(threshcnt == thresh):
+            print("TERMINATING ",threshcnt,"/",thresh)
+            return True
+            
+
+       # printBoard(gameMap)
+        #printBoard(conflicts)
         print(queensloc)
         
         c = 0
         for qx, qy in queensloc:
             #print(conflicts[qx][qy])
             if conflicts[qx][qy] > 1:
-           
                 c+=1
         if(c == 0):
              solved = True
@@ -140,13 +169,20 @@ def NQueens():
              print("------------",n,"Queen PROBLEM SOLVED------------/n Time Took: ",endTime-startTime," seconds only!" ) 
              printBoard(gameMap)
              printBoard(conflicts)
+             return False
 
 
 
 
 if __name__ == "__main__":
 
-
-    NQueens()
+    i=0;
+    n = int(input("ENTER N:\n"))
+    thresh = n/2
+    thresh = thresh.__round__()
+    startTime = time.time()
+    while (NQueens(i,n)):
+       i = i+1
+       print("Done")
 
 
