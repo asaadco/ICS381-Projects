@@ -86,7 +86,7 @@ def myImprove(gameMap, queensloc, conflicts):
     for i in range(0,gameMap[rand1].__len__()):
         if(gameMap[rand1][i] ==1):
             loc = getLeastConflict(conflicts,rand1)
-            print("Row: ",rand1," Col: ",loc)
+            #print("Row: ",rand1," Col: ",loc)
             gameMap[rand1][i] =0;
             gameMap[rand1][loc] = 1 ;
 
@@ -133,9 +133,9 @@ def NQueens(t,n):
         queensloc.append((i,rand))
 
     conflicts = returnConflicts(gameMap)
-    printBoard(gameMap)
-    printBoard(conflicts)
-    print(queensloc)
+    #printBoard(gameMap)
+    #printBoard(conflicts)
+    #print(queensloc)
     solved = False
     threshcnt = 0;
     while(not solved):
@@ -148,15 +148,15 @@ def NQueens(t,n):
         stuck = isStuck(queensloc,oldQueenloc)
         if(stuck):
             threshcnt = threshcnt+1
-            print("ITERATION#",t," Stuck THRSH=",threshcnt)
+            #print("ITERATION#",t," Stuck THRSH=",threshcnt)
         if(threshcnt == thresh):
-            print("ITERATION#",t," TERMINATING ",threshcnt,"/",thresh)
+            #print("ITERATION#",t," TERMINATING ",threshcnt,"/",thresh)
             return True
             
 
        # printBoard(gameMap)
         #printBoard(conflicts)
-        print(queensloc)
+        #print(queensloc)
         
         c = 0
         for qx, qy in queensloc:
@@ -166,22 +166,33 @@ def NQueens(t,n):
         if(c == 0):
              solved = True
              endTime = time.time()
-             print("------------",n,"Queen PROBLEM SOLVED------------/n Time Took: ",endTime-startTime," seconds only!" ) 
-             printBoard(gameMap)
-             printBoard(conflicts)
+             #print("------------",n,"Queen PROBLEM SOLVED------------/n Time Took: ",endTime-startTime," seconds only!" ) 
+             #printBoard(gameMap)
+             #printBoard(conflicts)
              return False
 
 
 
 
 if __name__ == "__main__":
-
+    totalTime = 0
     t=0;
     n = int(input("ENTER N:\n"))
     thresh = 3
-    startTime = time.time()
-    while (NQueens(t,n)):
-       t = t+1
-       print("Done")
+    
+    ## repition is a variable that specifies how many time the problem will be sovled
+    repition = 50
+    ## cnt is a variable that will incerment unitll it reaches the repition value
+    cnt = 0
+    for cnt in range(0,repition):
+        startTime = time.time()
+        while (NQueens(t,n)):
+           t = t+1
+           #print("Repition # ",cnt)
+        totalTime = totalTime + time.time() - startTime
+    avgTime = totalTime / repition
+
+    print("Average time of ",repition," repititions is secs",avgTime)
+    
 
 
