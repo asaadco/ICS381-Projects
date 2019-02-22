@@ -91,6 +91,25 @@ def myImprove(gameMap, queensloc, conflicts):
             gameMap[rand1][loc] = 1 ;
 
     return gameMap;
+
+def randomImprove(gameMap, queensloc, conflicts):
+    changed = False
+    queen = queensloc[random.randint(0, len(queensloc)-1)]
+    x,y = queen
+    row = col = 0
+    
+    while(not changed):
+        row = random.randint(0,gameMap[0].__len__()-1)
+        col = random.randint(0,gameMap[0].__len__()-1)
+        if( not queensloc.__contains__((row,col))):
+            queensloc.remove((x,y))
+            queensloc.append((row,col))
+            gameMap[x][y] = 0
+            gameMap[row][col] = 1
+            changed = True
+
+   
+    return gameMap
             
 
     
@@ -118,7 +137,33 @@ def isStuck(queensloc,oldQueenloc):
         else:
             stuck = True
     return stuck
+def generateRRGameMap(gameMap,queensloc): ## Random Row based game map
+    for i in range(0, n):
+        rand = random.randint(0,n-1)
+        gameMap[i][rand] = 1
+        queensloc.append((i,rand))
+    mapProp = [gameMap,queensloc]
+    return mapProp
 
+def generateRGameMap(gameMap,queensloc): # Totally Random game map
+    
+    while(queensloc.__len__() <= gameMap.__len__()-1):
+        row = random.randint(0,n-1)
+        col = random.randint(0,n-1)
+        randomCord = (row,col)
+        if(queensloc.__contains__(randomCord)):
+            continue
+        queensloc.append(randomCord)
+        gameMap[row][col] =1
+    
+    mapProp = [gameMap,queensloc]
+    
+    return mapProp
+          
+        
+    
+
+    
 def NQueens(t,n):
     
     #gameMap = [[1 for n in range(5)] for n in range(5)
@@ -127,15 +172,14 @@ def NQueens(t,n):
         
     queensloc = []
     gameMap = [[0 for N in range(n)] for N in range(n)] ## INITILIZLAZE GAMEMAP TO ZEROES
-    for i in range(0, n):
-        rand = random.randint(0,n-1)
-        gameMap[i][rand] = 1
-        queensloc.append((i,rand))
+##    for i in range(0, n):
+##        rand = random.randint(0,n-1)
+##        gameMap[i][rand] = 1
+##        queensloc.append((i,rand))
+    gameMap,queensloc = generateRRGameMap(gameMap,queensloc)
 
     conflicts = returnConflicts(gameMap)
-    #printBoard(gameMap)
-    #printBoard(conflicts)
-    #print(queensloc)
+    
     solved = False
     threshcnt = 0;
     while(not solved):
@@ -144,6 +188,7 @@ def NQueens(t,n):
         oldQueenloc = queensloc
         queensloc = getQueensLoc(gameMap,queensloc)        
         conflicts = returnConflicts(gameMap)
+        
 
         stuck = isStuck(queensloc,oldQueenloc)
         if(stuck):
@@ -169,6 +214,7 @@ def NQueens(t,n):
              #print("------------",n,"Queen PROBLEM SOLVED------------/n Time Took: ",endTime-startTime," seconds only!" ) 
              #printBoard(gameMap)
              #printBoard(conflicts)
+             #print(queensloc)
              return False
 
 
@@ -181,7 +227,7 @@ if __name__ == "__main__":
     thresh = 3
     
     ## repition is a variable that specifies how many time the problem will be sovled
-    repition = 50
+    repition = 500
     ## cnt is a variable that will incerment unitll it reaches the repition value
     cnt = 0
     for cnt in range(0,repition):
